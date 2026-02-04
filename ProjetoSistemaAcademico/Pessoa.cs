@@ -4,19 +4,13 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace APPteste
+namespace ProjetoSistemaAcademico
 {
-    internal class Pessoa
+    public class Pessoa
     {
-        public List<string> Alunos { get; set; } = new List<string>();
-        public string nome;
-        public long cpf;
-        public string dataNascimento;
+        public string Nome {get; set; }
+        public long Cpf { get; set; }
+        public DateTime DataNascimento { get; set; }
 
-        public Pessoa()
-        {
-            
-            dataNascimento = DateTime.Now.ToString("dd/MM/yyyy");
-        }
     }
 }
