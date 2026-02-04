@@ -25,7 +25,7 @@ namespace ProjetoSistemaAcademico
                 Console.WriteLine("3 - Consultar Aluno\n");
                 Console.WriteLine("4 - Consultar Professor\n");
                 Console.WriteLine("5 - Consultar Notas");
-                Console.WriteLine("6 - Editar  Notas\n");
+                Console.WriteLine("6 - Editar Notas\n");
                 Console.WriteLine("=================================================\n");
                 int escolha = int.Parse(Console.ReadLine());
 

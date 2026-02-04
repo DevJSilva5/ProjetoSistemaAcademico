@@ -13,16 +13,27 @@ namespace ProjetoSistemaAcademico
         float Ciencias { get; set; }
         float Historia { get; set; }
         float Geografia { get; set; }
-    public Notas(int numMatricula, float matematica, float portugues, float ciencias, float historia, float geografia)
+
+        public Notas(
+            string nome,
+            long cpf,
+            DateTime dataNascimento,
+            string curso,
+            int numMatricula,
+            float matematica,
+            float portugues,
+            float ciencias,
+            float historia,
+            float geografia)
+            : base(nome, cpf, dataNascimento, curso, numMatricula)
         {
-            NumMatricula = numMatricula;
             Matematica = matematica;
             Portugues = portugues;
             Ciencias = ciencias;
             Historia = historia;
             Geografia = geografia;
-
         }
+
         public override string ToString()
         {
             return
@@ -36,4 +47,5 @@ namespace ProjetoSistemaAcademico
                 $"Nota de Geografia: {Geografia}\n" +
                 "===============================\n";
         }
+    }
 }
