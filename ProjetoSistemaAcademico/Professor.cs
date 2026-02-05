@@ -10,7 +10,7 @@ namespace ProjetoSistemaAcademico
     {
         float Salario { get; set; }
 
-        public Professor(string nome, long cpf, DateTime dataNascimento, float salario)
+        public Professor(string nome, string cpf, DateTime dataNascimento, float salario)
         {
             Nome = nome;
             Cpf = cpf;
@@ -26,7 +26,7 @@ namespace ProjetoSistemaAcademico
                 $"Nome: {Nome}\n" +
                 $"CPF: {Cpf}\n" +
                 $"Data de Nascimento: {DataNascimento.ToShortDateString()}\n" +
-                $"Sálario: {Salario}\n" +
+                $"Sálario: {Salario}\n".Replace('.',',') +
                 "===============================\n";
 
 

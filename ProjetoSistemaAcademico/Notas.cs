@@ -16,7 +16,7 @@ namespace ProjetoSistemaAcademico
 
         public Notas(
             string nome,
-            long cpf,
+            string cpf,
             DateTime dataNascimento,
             string curso,
             int numMatricula,
