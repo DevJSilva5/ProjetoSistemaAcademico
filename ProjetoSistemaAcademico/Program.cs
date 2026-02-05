@@ -89,7 +89,7 @@ namespace ProjetoSistemaAcademico
                         string cursoA = "";
                         do
                         {
-                            Console.WriteLine("Digite o Nome do Aluno: ");
+                            Console.WriteLine("Digite o Nome do Curso: ");
                             cursoA = Console.ReadLine();
                             if (cursoA.Length > 50)
                             {
@@ -186,7 +186,23 @@ namespace ProjetoSistemaAcademico
                                 {
                                     Console.WriteLine("Acesso Permitido!\n");
                                     Console.WriteLine("Digite o Número de Matrícula do Aluno: ");
-                                    Console.ReadLine();
+
+                                    string buscarAluno = Console.ReadLine();
+                                    if (int.TryParse(buscarAluno, out int numMatriculaBusca))
+                                    {
+                                        Aluno alunoEncontrado = Alunos.FirstOrDefault(p => p.NumMatricula == numMatriculaBusca);
+                                        Console.WriteLine("Aluno Encontrado");
+
+                                        foreach (var prod in Alunos)
+                                        {
+                                            Console.WriteLine(prod.ToString());
+                                        }
+
+                                    }
+                                    else
+                                    {
+                                        Console.WriteLine("Número de matrícula inválido.");
+                                    }
 
                                 }
                                 else
