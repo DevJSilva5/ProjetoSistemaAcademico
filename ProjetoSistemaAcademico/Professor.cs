@@ -8,7 +8,7 @@ namespace ProjetoSistemaAcademico
 {
     public class Professor : Pessoa
     {
-        float Salario { get; set; }
+        public float Salario { get; set; }
 
         public Professor(string nome, string cpf, DateTime dataNascimento, float salario)
         {
@@ -20,17 +20,14 @@ namespace ProjetoSistemaAcademico
 
         public override string ToString()
         {
-
             return
                 "===============================\n" +
                 $"Nome: {Nome}\n" +
                 $"CPF: {Cpf}\n" +
                 $"Data de Nascimento: {DataNascimento.ToShortDateString()}\n" +
-                $"Sálario: {Salario}\n".Replace('.',',') +
+                $"Salário: R$ {Salario.ToString("F2")}\n" + // Formatado para moeda
                 "===============================\n";
-
-
         }
     }
-
 }
+

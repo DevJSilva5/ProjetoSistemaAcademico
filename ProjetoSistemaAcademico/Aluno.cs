@@ -8,11 +8,10 @@ namespace ProjetoSistemaAcademico
 {
     public class Aluno : Pessoa
     {
-
         public string Curso { get; set; }
         public int NumMatricula { get; set; }
 
-    public Aluno(string nome, string cpf, DateTime dataNascimento, string curso, int numMatricula)
+        public Aluno(string nome, string cpf, DateTime dataNascimento, string curso, int numMatricula)
         {
             Nome = nome;
             Cpf = cpf;
@@ -23,8 +22,7 @@ namespace ProjetoSistemaAcademico
 
         public override string ToString()
         {
-
-            return 
+            return
                 "===============================\n" +
                 $"Nome: {Nome}\n" +
                 $"CPF: {Cpf}\n" +
@@ -32,8 +30,6 @@ namespace ProjetoSistemaAcademico
                 $"Curso: {Curso}\n" +
                 $"Número de Matrícula: {NumMatricula}\n" +
                 "===============================\n";
-            
-
         }
     }
-    }
+}
