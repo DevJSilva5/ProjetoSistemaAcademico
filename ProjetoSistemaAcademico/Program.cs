@@ -20,30 +20,29 @@ namespace ProjetoSistemaAcademico
             {
                 Console.Clear();
                 Console.WriteLine("=================================================");
-                Console.WriteLine("SEJA BEM VINDO A ESCOLA TÉCNICA SENAI CIMATEC!");
+                Console.WriteLine("      ESCOLA TÉCNICA SENAI CIMATEC");
                 Console.WriteLine("=================================================");
                 Console.WriteLine("1 - Cadastrar Aluno");
                 Console.WriteLine("2 - Cadastrar Professor");
                 Console.WriteLine("3 - Consultar Aluno");
                 Console.WriteLine("4 - Consultar Professor");
                 Console.WriteLine("5 - Consultar Notas");
-                Console.WriteLine("6 - Editar/Lançar Notas (Área do Professor)");
+                Console.WriteLine("6 - Lançar Notas (Área do Professor)");
                 Console.WriteLine("7 - Sair");
                 Console.WriteLine("=================================================");
                 Console.Write("Escolha uma opção: ");
 
                 int escolha;
-                // Validação simples para não quebrar se digitar letra
                 if (!int.TryParse(Console.ReadLine(), out escolha))
                 {
-                    Console.WriteLine("Opção inválida. Pressione Enter.");
+                    Console.WriteLine("Opção inválida.");
                     Console.ReadLine();
                     continue;
                 }
 
                 switch (escolha)
                 {
-                    case 1: // CADASTRAR ALUNO
+                    case 1:
                         Console.WriteLine("\n--- Cadastrar Aluno ---");
 
                         string nomeA = "";
@@ -91,38 +90,77 @@ namespace ProjetoSistemaAcademico
                         Console.ReadLine();
                         break;
 
-                    case 2: // CADASTRAR PROFESSOR
+                    case 2:
                         Console.WriteLine("\n--- Cadastrar Professor ---");
 
-                        Console.Write("Digite o Nome do Professor: ");
-                        string nomeP = Console.ReadLine();
+                        string nomeP = "";
+                        do
+                        {
+                            Console.Write("Digite o Nome do Professor: ");
+                            nomeP = Console.ReadLine();
+                            if (nomeP.Length > 50 || nomeP.Length < 4 || Regex.IsMatch(nomeP, @"\d"))
+                            {
+                                Console.WriteLine("Erro: Nome deve ter entre 4 e 50 caracteres e não conter números.");
+                            }
+                        } while (nomeP.Length > 50 || nomeP.Length < 4 || Regex.IsMatch(nomeP, @"\d"));
 
-                        Console.Write("Digite o CPF do Professor: ");
-                        string cpfP = Console.ReadLine();
+                        string cpfP = "";
+                        do
+                        {
+                            Console.Write("Digite o CPF do Professor (11 números): ");
+                            cpfP = Console.ReadLine();
+                            if (cpfP.Length != 11)
+                                Console.WriteLine("Erro: O CPF deve conter exatamente 11 números.");
+                        } while (cpfP.Length != 11);
 
-                        Console.Write("Digite a Data de Nascimento: ");
+                        Console.Write("Digite a Data de Nascimento (dd/mm/aa): ");
                         DateTime datanascimentoP;
                         while (!DateTime.TryParse(Console.ReadLine(), out datanascimentoP))
                         {
                             Console.Write("Data inválida. Tente novamente: ");
                         }
 
-                        Console.Write("Digite o Salário do Professor: ");
+                        Console.Write("Salário: ");
                         float salarioP;
                         while (!float.TryParse(Console.ReadLine(), out salarioP))
                         {
                             Console.Write("Valor inválido. Digite o salário novamente: ");
                         }
 
-                        Professor novoProf = new Professor(nomeP, cpfP, datanascimentoP, salarioP);
-                        Professores.Add(novoProf);
+                        string senhaP = "";
+                        do
+                        {
+                            Console.Write("Crie uma Senha de Acesso: ");
+                            senhaP = Console.ReadLine();
+                            if (string.IsNullOrWhiteSpace(senhaP)) Console.WriteLine("A senha não pode ser vazia.");
+                        } while (string.IsNullOrWhiteSpace(senhaP));
 
+                        Professor novoProf = new Professor(nomeP, cpfP, datanascimentoP, salarioP, senhaP);
+
+                        bool adicionarMais = true;
+                        while (adicionarMais)
+                        {
+                            Console.Write("\nDigite o nome da matéria que este professor leciona: ");
+                            string materia = Console.ReadLine();
+
+                            if (!string.IsNullOrWhiteSpace(materia))
+                            {
+                                novoProf.AdicionarDisciplina(materia);
+                                Console.WriteLine($"Matéria '{materia}' adicionada.");
+                            }
+
+                            Console.Write("Deseja inserir outra matéria? (S/N): ");
+                            string resp = Console.ReadLine().ToUpper();
+                            if (resp != "S") adicionarMais = false;
+                        }
+
+                        Professores.Add(novoProf);
                         Console.WriteLine("\nProfessor Cadastrado com Sucesso!");
                         Console.WriteLine("Pressione Enter para voltar.");
                         Console.ReadLine();
                         break;
 
-                    case 3: // CONSULTAR ALUNOS
+                    case 3:
                         Console.WriteLine("\n--- Consultar Alunos ---");
                         if (Alunos.Count > 0)
                         {
@@ -139,7 +177,7 @@ namespace ProjetoSistemaAcademico
                         Console.ReadLine();
                         break;
 
-                    case 4: // CONSULTAR PROFESSORES
+                    case 4:
                         Console.WriteLine("\n--- Consultar Professores ---");
                         if (Professores.Count > 0)
                         {
@@ -156,7 +194,7 @@ namespace ProjetoSistemaAcademico
                         Console.ReadLine();
                         break;
 
-                    case 5: // CONSULTAR NOTAS
+                    case 5:
                         Console.WriteLine("\n--- Consultar Notas ---");
                         Console.Write("Digite o Número de Matrícula do Aluno: ");
                         if (int.TryParse(Console.ReadLine(), out int matConsulta))
@@ -182,69 +220,78 @@ namespace ProjetoSistemaAcademico
                         Console.ReadLine();
                         break;
 
-                    case 6: // EDITAR NOTAS
-                        Console.WriteLine("\n--- Editar Notas (Acesso Restrito) ---");
-                        Console.Write("Digite a Senha (1234): ");
-                        string senha = Console.ReadLine();
+                    case 6:
+                        Console.WriteLine("\n--- Área do Professor ---");
 
-                        if (senha == "1234")
+                        Console.Write("Digite seu Nome (como cadastrado): ");
+                        string nomeLogin = Console.ReadLine();
+
+                        Professor profLogado = Professores.FirstOrDefault(p => p.Nome.Equals(nomeLogin, StringComparison.OrdinalIgnoreCase));
+
+                        if (profLogado == null)
                         {
-                            Console.WriteLine("Acesso Permitido!");
-                            Console.Write("Digite o Número de Matrícula do Aluno: ");
+                            Console.WriteLine("Professor não encontrado!");
+                            Console.ReadLine();
+                            break;
+                        }
 
-                            if (int.TryParse(Console.ReadLine(), out int numMatriculaBusca))
+                        Console.Write($"Olá, {profLogado.Nome}. Digite sua senha: ");
+                        string senhaDigitada = Console.ReadLine();
+
+                        if (senhaDigitada != profLogado.Senha)
+                        {
+                            Console.WriteLine("Senha Incorreta! Acesso Negado.");
+                            Console.ReadLine();
+                            break;
+                        }
+
+                        Console.WriteLine("\n--- Acesso Permitido ---");
+                        Console.WriteLine($"Suas matérias: {string.Join(", ", profLogado.Disciplinas)}");
+
+                        Console.Write("\nDigite a Matrícula do Aluno para dar nota: ");
+                        if (int.TryParse(Console.ReadLine(), out int matBusca))
+                        {
+                            Aluno alunoAlvo = Alunos.FirstOrDefault(a => a.NumMatricula == matBusca);
+                            if (alunoAlvo == null)
                             {
-                                Aluno alunoEncontrado = Alunos.FirstOrDefault(p => p.NumMatricula == numMatriculaBusca);
+                                Console.WriteLine("Aluno não encontrado.");
+                                Console.ReadLine();
+                                break;
+                            }
 
-                                if (alunoEncontrado != null)
+                            Console.WriteLine($"Aluno: {alunoAlvo.Nome}");
+
+                            Notas boletimAluno = ListaDeNotas.FirstOrDefault(n => n.NumMatricula == matBusca);
+                            if (boletimAluno == null)
+                            {
+                                boletimAluno = new Notas(matBusca);
+                                ListaDeNotas.Add(boletimAluno);
+                            }
+
+                            foreach (string materia in profLogado.Disciplinas)
+                            {
+                                Console.Write($"Nota para {materia} (Pressione ENTER para pular ou digite a nota): ");
+                                string inputNota = Console.ReadLine();
+
+                                if (!string.IsNullOrWhiteSpace(inputNota))
                                 {
-                                    Console.WriteLine($"\nAluno Encontrado: {alunoEncontrado.Nome}");
-                                    Console.WriteLine("Insira as notas:");
-
-                                    Console.Write("Matemática: ");
-                                    float.TryParse(Console.ReadLine(), out float nMat);
-                                    Console.Write("Português: ");
-                                    float.TryParse(Console.ReadLine(), out float nPort);
-                                    Console.Write("Ciências: ");
-                                    float.TryParse(Console.ReadLine(), out float nCien);
-                                    Console.Write("História: ");
-                                    float.TryParse(Console.ReadLine(), out float nHist);
-                                    Console.Write("Geografia: ");
-                                    float.TryParse(Console.ReadLine(), out float nGeo);
-
-                                    // Verifica se já existe nota para atualizar ou cria nova
-                                    var notaExistente = ListaDeNotas.FirstOrDefault(n => n.NumMatricula == numMatriculaBusca);
-                                    if (notaExistente != null)
+                                    if (float.TryParse(inputNota.Replace(".", ","), out float valorNota))
                                     {
-                                        notaExistente.Matematica = nMat;
-                                        notaExistente.Portugues = nPort;
-                                        notaExistente.Ciencias = nCien;
-                                        notaExistente.Historia = nHist;
-                                        notaExistente.Geografia = nGeo;
-                                        Console.WriteLine("Notas atualizadas com sucesso!");
+                                        boletimAluno.LancarNota(materia, valorNota);
+                                        Console.WriteLine($"Nota de {materia} salva.");
                                     }
                                     else
                                     {
-                                        Notas novaNota = new Notas(numMatriculaBusca, nMat, nPort, nCien, nHist, nGeo);
-                                        ListaDeNotas.Add(novaNota);
-                                        Console.WriteLine("Notas lançadas com sucesso!");
+                                        Console.WriteLine("Valor inválido.");
                                     }
                                 }
-                                else
-                                {
-                                    Console.WriteLine("Aluno não encontrado com esta matrícula.");
-                                }
                             }
-                            else
-                            {
-                                Console.WriteLine("Número de matrícula inválido.");
-                            }
+                            Console.WriteLine("\nProcesso finalizado.");
                         }
                         else
                         {
-                            Console.WriteLine("Senha Incorreta! Acesso Negado.");
+                            Console.WriteLine("Matrícula inválida.");
                         }
-                        Console.WriteLine("Pressione Enter para voltar.");
                         Console.ReadLine();
                         break;
 

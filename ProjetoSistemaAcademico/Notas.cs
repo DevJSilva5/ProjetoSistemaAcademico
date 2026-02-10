@@ -8,38 +8,59 @@ namespace ProjetoSistemaAcademico
 {
     public class Notas
     {
-        // Identificador para saber de qual aluno são essas notas
         public int NumMatricula { get; set; }
+        public Dictionary<string, float> Boletim { get; set; }
 
-        // Propriedades precisam ser PUBLIC para serem acessadas no Program.cs
-        public float Matematica { get; set; }
-        public float Portugues { get; set; }
-        public float Ciencias { get; set; }
-        public float Historia { get; set; }
-        public float Geografia { get; set; }
-
-        public Notas(int numMatricula, float matematica, float portugues, float ciencias, float historia, float geografia)
+        public Notas(int numMatricula)
         {
             NumMatricula = numMatricula;
-            Matematica = matematica;
-            Portugues = portugues;
-            Ciencias = ciencias;
-            Historia = historia;
-            Geografia = geografia;
+            Boletim = new Dictionary<string, float>();
+        }
+
+        public void LancarNota(string materia, float nota)
+        {
+            if (Boletim.ContainsKey(materia))
+            {
+                Boletim[materia] = nota;
+            }
+            else
+            {
+                Boletim.Add(materia, nota);
+            }
+        }
+
+        public float CalcularMediaGeral()
+        {
+            if (Boletim.Count == 0) return 0;
+            return Boletim.Values.Average();
         }
 
         public override string ToString()
         {
-            return
-                "===============================\n" +
-                $"BOLETIM (Matrícula: {NumMatricula})\n" +
-                "===============================\n" +
-                $"Nota de Matemática: {Matematica}\n" +
-                $"Nota de Português:  {Portugues}\n" +
-                $"Nota de Ciências:   {Ciencias}\n" +
-                $"Nota de História:   {Historia}\n" +
-                $"Nota de Geografia:  {Geografia}\n" +
-                "===============================\n";
+            StringBuilder sb = new StringBuilder();
+            sb.AppendLine("===============================");
+            sb.AppendLine($"BOLETIM (Matrícula: {NumMatricula})");
+            sb.AppendLine("===============================");
+
+            if (Boletim.Count > 0)
+            {
+                foreach (var item in Boletim)
+                {
+                    sb.AppendLine($"Matéria: {item.Key} | Nota: {item.Value:F1}");
+                }
+                sb.AppendLine("-------------------------------");
+                sb.AppendLine($"MÉDIA GERAL: {CalcularMediaGeral():F1}");
+
+                if (CalcularMediaGeral() >= 7) sb.AppendLine("Situação: APROVADO");
+                else sb.AppendLine("Situação: EM RECUPERAÇÃO");
+            }
+            else
+            {
+                sb.AppendLine("Nenhuma nota lançada ainda.");
+            }
+
+            sb.AppendLine("===============================\n");
+            return sb.ToString();
         }
     }
 }
