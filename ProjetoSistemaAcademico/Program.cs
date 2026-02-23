@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text.RegularExpressions;
@@ -28,7 +28,9 @@ namespace ProjetoSistemaAcademico
                 Console.WriteLine("4 - Consultar Professor");
                 Console.WriteLine("5 - Consultar Notas");
                 Console.WriteLine("6 - Lançar Notas (Área do Professor)");
-                Console.WriteLine("7 - Sair");
+                Console.WriteLine("7 - Remover Aluno");
+                Console.WriteLine("8 - Remover Professor");
+                Console.WriteLine("9 - Sair");
                 Console.WriteLine("=================================================");
                 Console.Write("Escolha uma opção: ");
 
@@ -113,7 +115,7 @@ namespace ProjetoSistemaAcademico
                                 Console.WriteLine("Erro: O CPF deve conter exatamente 11 números.");
                         } while (cpfP.Length != 11);
 
-                        Console.Write("Digite a Data de Nascimento (dd/mm/aa): ");
+                        Console.Write("Data Nascimento: ");
                         DateTime datanascimentoP;
                         while (!DateTime.TryParse(Console.ReadLine(), out datanascimentoP))
                         {
@@ -142,7 +144,7 @@ namespace ProjetoSistemaAcademico
                         {
                             Console.Write("\nDigite o nome da matéria que este professor leciona: ");
                             string materia = Console.ReadLine();
-
+                            
                             if (!string.IsNullOrWhiteSpace(materia))
                             {
                                 novoProf.AdicionarDisciplina(materia);
@@ -222,10 +224,10 @@ namespace ProjetoSistemaAcademico
 
                     case 6:
                         Console.WriteLine("\n--- Área do Professor ---");
-
+                        
                         Console.Write("Digite seu Nome (como cadastrado): ");
                         string nomeLogin = Console.ReadLine();
-
+                        
                         Professor profLogado = Professores.FirstOrDefault(p => p.Nome.Equals(nomeLogin, StringComparison.OrdinalIgnoreCase));
 
                         if (profLogado == null)
@@ -296,6 +298,56 @@ namespace ProjetoSistemaAcademico
                         break;
 
                     case 7:
+                        Console.WriteLine("\n--- Remover Aluno ---");
+                        Console.Write("Digite o Número de Matrícula do Aluno a ser removido: ");
+                        if (int.TryParse(Console.ReadLine(), out int matRemover))
+                        {
+                            Aluno alunoRemover = Alunos.FirstOrDefault(a => a.NumMatricula == matRemover);
+                            if (alunoRemover != null)
+                            {
+                                Alunos.Remove(alunoRemover);
+
+                                Notas notasRemover = ListaDeNotas.FirstOrDefault(n => n.NumMatricula == matRemover);
+                                if (notasRemover != null)
+                                {
+                                    ListaDeNotas.Remove(notasRemover);
+                                }
+
+                                Console.WriteLine("Aluno removido com sucesso!");
+                            }
+                            else
+                            {
+                                Console.WriteLine("Aluno não encontrado.");
+                            }
+                        }
+                        else
+                        {
+                            Console.WriteLine("Matrícula inválida.");
+                        }
+                        Console.WriteLine("Pressione Enter para voltar.");
+                        Console.ReadLine();
+                        break;
+
+                    case 8:
+                        Console.WriteLine("\n--- Remover Professor ---");
+                        Console.Write("Digite o CPF do Professor a ser removido (11 números): ");
+                        string cpfRemover = Console.ReadLine();
+                        
+                        Professor profRemover = Professores.FirstOrDefault(p => p.Cpf == cpfRemover);
+                        if (profRemover != null)
+                        {
+                            Professores.Remove(profRemover);
+                            Console.WriteLine("Professor removido com sucesso!");
+                        }
+                        else
+                        {
+                            Console.WriteLine("Professor não encontrado.");
+                        }
+                        Console.WriteLine("Pressione Enter para voltar.");
+                        Console.ReadLine();
+                        break;
+
+                    case 9:
                         executar = false;
                         Console.WriteLine("Encerrando o sistema...");
                         break;
@@ -309,4 +361,3 @@ namespace ProjetoSistemaAcademico
         }
     }
 }
-
