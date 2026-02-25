@@ -74,17 +74,9 @@ namespace ProjetoSistemaAcademico
                             Console.Write("Data inválida. Tente novamente: ");
                         }
 
-                        string cursoA = "";
-                        do
-                        {
-                            Console.Write("Digite o Nome do Curso: ");
-                            cursoA = Console.ReadLine();
-                            if (cursoA.Length < 4 || Regex.IsMatch(cursoA, @"\d"))
-                                Console.WriteLine("Nome do curso inválido (mínimo 4 letras, sem números).");
-                        } while (cursoA.Length < 4 || Regex.IsMatch(cursoA, @"\d"));
-
+                        
                         int numMatriculaA = contadorNumMatricula++;
-                        Aluno novoAluno = new Aluno(nomeA, cpfA, datanascimentoA, cursoA, numMatriculaA);
+                        Aluno novoAluno = new Aluno(nomeA, cpfA, datanascimentoA, numMatriculaA);
                         Alunos.Add(novoAluno);
 
                         Console.WriteLine($"\nAluno Cadastrado com Sucesso! Matrícula: {numMatriculaA}");
@@ -115,7 +107,7 @@ namespace ProjetoSistemaAcademico
                                 Console.WriteLine("Erro: O CPF deve conter exatamente 11 números.");
                         } while (cpfP.Length != 11);
 
-                        Console.Write("Data Nascimento: ");
+                        Console.Write("Digite a Data de Nascimento (dd/mm/aaaa): ");
                         DateTime datanascimentoP;
                         while (!DateTime.TryParse(Console.ReadLine(), out datanascimentoP))
                         {
