@@ -148,7 +148,7 @@ namespace ProjetoSistemaAcademico
                             if (resp != "S") adicionarMais = false;
                         }
 
-                        Professores.Add(novoProf);
+                        Professores.Add(novoProf); 
                         Console.WriteLine("\nProfessor Cadastrado com Sucesso!");
                         Console.WriteLine("Pressione Enter para voltar.");
                         Console.ReadLine();
