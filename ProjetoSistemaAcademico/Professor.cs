@@ -6,8 +6,8 @@ using System.Threading.Tasks;
 
 namespace ProjetoSistemaAcademico
 {
-    // A classe Professor herda da classe Pessoa, representando um professor no sistema acadêmico
-    public class Professor : Pessoa
+    // A classe Professor herda de Pessoa e implementa IAutenticavel para permitir login
+    public class Professor : Pessoa, IAutenticavel
     {
         // Propriedade para o salário do professor
         public float Salario { get; set; }
@@ -25,6 +25,12 @@ namespace ProjetoSistemaAcademico
             Salario = salario;
             Senha = senha;
             Disciplinas = new List<string>();
+        }
+
+        // Implementação do método da interface IAutenticavel
+        public bool Autenticar(string senhaDigitada)
+        {
+            return this.Senha == senhaDigitada;
         }
 
         // Método para adicionar uma disciplina à lista de disciplinas do professor

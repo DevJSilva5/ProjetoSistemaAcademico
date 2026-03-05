@@ -41,9 +41,9 @@ namespace ProjetoSistemaAcademico
                 Console.WriteLine("=================================================");
                 Console.Write("Escolha uma opção: ");
 
-
-                try {
-
+                // Captura a escolha do usuário e utiliza um bloco try-catch para tratar possíveis erros de entrada, como digitar texto em vez de números
+                try
+                {
                     int escolha = Convert.ToInt32(Console.ReadLine());
 
                     // Estrutura de controle para as opções do menu
@@ -268,7 +268,8 @@ namespace ProjetoSistemaAcademico
                             Console.Write($"Olá, {profLogado.Nome}. Digite sua senha: ");
                             string senhaDigitada = Console.ReadLine();
 
-                            if (senhaDigitada != profLogado.Senha)
+                            // Chamada da interface para validar o acesso
+                            if (!profLogado.Autenticar(senhaDigitada))
                             {
                                 Console.WriteLine("Senha Incorreta! Acesso Negado.");
                                 Console.ReadLine();
