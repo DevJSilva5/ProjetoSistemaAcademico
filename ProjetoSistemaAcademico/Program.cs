@@ -218,29 +218,38 @@ namespace ProjetoSistemaAcademico
                         // Opção 5: Consultar Notas
                         case 5:
                             Console.WriteLine("\n--- Consultar Notas ---");
-
-                            // Solicitar ao usuário o número de matrícula do aluno para consultar suas notas
-                            Console.Write("Digite o Número de Matrícula do Aluno: ");
-                            if (int.TryParse(Console.ReadLine(), out int matConsulta))
+                            try
                             {
-                                // Buscar as notas do aluno com base na matrícula e exibir as informações, ou mostrar mensagem caso não haja notas lançadas
+                                // Solicitar ao usuário o número de matrícula
+                                Console.Write("Digite o Número de Matrícula do Aluno: ");
+                                if (!int.TryParse(Console.ReadLine(), out int matConsulta))
+                                    throw new Exception("Matrícula inválida.");
+
+                                // Buscar as notas do aluno específico
                                 var notasEncontradas = ListaDeNotas.FirstOrDefault(n => n.NumMatricula == matConsulta);
                                 var alunoDono = Alunos.FirstOrDefault(a => a.NumMatricula == matConsulta);
 
-                                if (notasEncontradas != null)
+                                if (notasEncontradas == null)
+                                    throw new Exception("Nenhuma nota lançada para esta matrícula.");
+
+                                // Exibe os dados do aluno e seu boletim individual
+                                if (alunoDono != null) Console.WriteLine($"ALUNO: {alunoDono.Nome}");
+                                Console.WriteLine(notasEncontradas.ToString());
+
+                                
+                                // SelectMany "achata" todos os dicionários de notas em uma única sequência de valores
+                                var todasAsNotasDaEscola = ListaDeNotas.SelectMany(n => n.Boletim.Values);
+
+                                if (todasAsNotasDaEscola.Any())
                                 {
-                                    if (alunoDono != null) Console.WriteLine($"ALUNO: {alunoDono.Nome}");
-                                    Console.WriteLine(notasEncontradas.ToString());
-                                }
-                                else
-                                {
-                                    Console.WriteLine("Nenhuma nota lançada para esta matrícula.");
+                                    double mediaEscola = todasAsNotasDaEscola.Average();
+                                    Console.WriteLine("-------------------------------");
+                                    Console.WriteLine($"MÉDIA GERAL DA ESCOLA: {mediaEscola:F1}");
+                                    Console.WriteLine("-------------------------------");
                                 }
                             }
-                            else
-                            {
-                                Console.WriteLine("Matrícula inválida.");
-                            }
+                            catch (Exception ex) { Console.WriteLine(ex.Message); }
+
                             Console.WriteLine("Pressione Enter para voltar.");
                             Console.ReadLine();
                             break;
