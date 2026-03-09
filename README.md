@@ -44,7 +44,7 @@ Ao iniciar, você verá um menu numerado. Aqui estão os fluxos principais:
  * O sistema listará apenas as matérias que aquele professor leciona. Insira as notas (use vírgula para decimais).
 3. Consulta de Boletim
  * Na Opção 5, ao digitar a matrícula, o sistema exibe o boletim completo com a média e o status:
-   * Aprovado: Média \ge 7,0.
+   * Aprovado: Média >= 7,0.
    * Em Recuperação: Média < 7,0.
 
 🛠️ Validações Implementadas
